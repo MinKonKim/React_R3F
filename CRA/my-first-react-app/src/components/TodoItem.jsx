@@ -1,4 +1,9 @@
-const TodoItem = ({ id, text, isCompleted, toggleComplete, deleteTodo }) => {
+import { useContext } from "react";
+import { TodoContext } from "../context/TodoContext";
+
+export const TodoItem = ({ id, text, isCompleted }) => {
+  const { toggleComplete, deleteTodo } = useContext(TodoContext);
+
   return (
     <div className="todo-item">
       <input className="checkbox" type="checkbox" checked={isCompleted} />
@@ -17,5 +22,3 @@ const TodoItem = ({ id, text, isCompleted, toggleComplete, deleteTodo }) => {
     </div>
   );
 };
-
-export default TodoItem;
