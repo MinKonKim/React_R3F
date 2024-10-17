@@ -16,20 +16,24 @@ export const Dino = ({ name, objectId, onClick, position, ...props }) => {
   const isSelected = objectId === selectedId;
 
   useEffect(() => {
-    actions[`Armature|${name}_Idle`].reset().play();
-  }, []);
+    const animation = isSelected ? "Walk" : "Idle";
+    actions[`Armature|${name}_${animation}`].reset().play();
+    return () => actions[`Armature|${name}_${animation}`].fadeOut();
+  }, [isSelected]);
 
   useFrame((state) => {
-    if (isSelected) {
-      const [offsetX, offsetY, offsetZ] = position;
+    if (!isEditMode && isSelected) {
+      const [offestX, offestY, offsetZ] = position;
+
       const { x, y, z } = group.current.children[0].position;
-      const realX = offsetX + x;
-      const realY = offsetY + y;
+      const realX = offestX + x;
+      const realY = offestY + y;
       const realZ = offsetZ + z;
 
       state.camera.lookAt(realX, realY, realZ);
+
       state.camera.position.lerp(
-        new THREE.Vector3(realX, realY + 20, realZ + 40),
+        new THREE.Vector3(realX, realY + 10, realZ + 20),
         0.01
       );
     }
